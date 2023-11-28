@@ -86,7 +86,8 @@ public class ElectronicsTest extends Utility {
         sendTextToElement(By.xpath("//input[@id='LastName']"), "Xyz");
         // 2.20 Fill the mandatory fields (Email)
         Random random = new Random();
-        sendTextToElement(By.xpath("//input[@id='Email']"), "abcd"+random.nextInt()+"@gmail.com");
+        String gmail = "abcd"+random.nextInt()+"@gmail.com";
+        sendTextToElement(By.xpath("//input[@id='Email']"), gmail);
         // 2.20 Fill the mandatory fields (Password)
         sendTextToElement(By.xpath("//input[@id='Password']"), "abcd123");
         // 2.20 Fill the mandatory fields (Confirm Password)
@@ -99,30 +100,68 @@ public class ElectronicsTest extends Utility {
         clickOnElement(By.xpath("//a[normalize-space()='Continue']"));
         // 2.24 Verify the text “Shopping card”
         verifyTheStringMessage(By.xpath("//h1[normalize-space()='Shopping cart']"), "Shopping cart");
+
+        // Login steps
+        clickOnElement(By.xpath("//a[normalize-space()='Log in']"));
+        sendTextToElement(By.id("Email"), gmail);
+        sendTextToElement(By.id("Password"), "abcd123");
+        clickOnElement(By.xpath("//button[normalize-space()='Log in']"));
+
         // 2.25 click on checkbox “I agree with the terms of service”
         clickOnElement(By.xpath("//input[@id='termsofservice']"));
         // 2.26 Click on “CHECKOUT”
-
         clickOnElement(By.xpath("//button[@id='checkout']"));
         // 2.27 Fill the Mandatory fields
-
+       selectByVisibleTextFromDropDown(By.xpath("//select[@id='BillingNewAddress_CountryId']"), "United Kingdom");
+       sendTextToElement(By.xpath("//input[@id='BillingNewAddress_City']"), "Harrow");
+       sendTextToElement(By.xpath("//input[@id='BillingNewAddress_Address1']"), "1, abcd Street");
+       sendTextToElement(By.xpath("//input[@id='BillingNewAddress_ZipPostalCode']"), "HA3 0AB");
+       sendTextToElement(By.xpath("//input[@id='BillingNewAddress_PhoneNumber']"), "07424811185");
         // 2.28 Click on “CONTINUE”
+        clickOnElement(By.xpath("//button[@onclick='Billing.save()']"));
         // 2.29 Click on Radio Button “2nd Day Air ($0.00)”
+        clickOnElement(By.xpath("//input[@value = '2nd Day Air___Shipping.FixedByWeightByTotal']"));
         // 2.30 Click on “CONTINUE”
+        clickOnElement(By.className("button-1 shipping-method-next-step-button"));
         // 2.31 Select Radio Button “Credit Card”
+        clickOnElement(By.xpath("//input[@id='paymentmethod_1']"));
+        clickOnElement(By.xpath("//button[@class='button-1 payment-method-next-step-button']"));
         // 2.32 Select “Visa” From Select credit card dropdown
-        // 2.33 Fill all the details
+        selectByVisibleTextFromDropDown(By.xpath("//select[@id='CreditCardType']"), "Visa");
+        // 2.33 Fill all the details (Card Holder Name)
+        sendTextToElement(By.xpath("//input[@id='CardholderName']"), "Abcdxyz");
+        // 2.33 Fill all the details (Card Number)
+        sendTextToElement(By.xpath("//input[@id='CardNumber']"), "4111111111111111");
+        // 2.33 Fill all the details (Card Expiry Date)
+        selectByVisibleTextFromDropDown(By.xpath("//select[@id='ExpireMonth']"), "05");
+        // 2.33 Fill all the details (Card Expiry Year)
+        selectByVisibleTextFromDropDown(By.xpath("//select[@id='ExpireYear']"), "2025");
+        // 2.33 Fill all the details (Card Secure Code)
+        sendTextToElement(By.xpath("//input[@id='CardCode']"), "123");
         // 2.34 Click on “CONTINUE”
+        clickOnElement(By.xpath("//button[@class='button-1 payment-info-next-step-button']"));
         // 2.35 Verify “Payment Method” is “Credit Card”
+        verifyTheStringMessage(By.xpath("//span[normalize-space()='Credit Card']"), "Credit Card");
         // 2.36 Verify “Shipping Method” is “2nd Day Air”
+        verifyTheStringMessage(By.xpath("//span[normalize-space()='2nd Day Air']"), "2nd Day Air");
         // 2.37 Verify Total is “$698.00”
+        verifyTheStringMessage(By.xpath("//span[@class='product-subtotal']"), "$698.00");
         // 2.38 Click on “CONFIRM”
+        clickOnElement(By.xpath("//button[normalize-space()='Confirm']"));
         // 2.39 Verify the Text “Thank You”
+        verifyTheStringMessage(By.xpath("//h1[normalize-space()='Thank you']"), "Thank You");
         // 2.40 Verify the message “Your order has been successfully processed!”
+        verifyTheStringMessage(By.xpath("//strong[normalize-space()='Your order has been successfully processed!']"), "Your order has been successfully processed!");
         // 2.41 Click on “CONTINUE”
+        clickOnElement(By.xpath("//button[normalize-space()='Continue']"));
         // 2.42 Verify the text “Welcome to our store”
+        verifyTheStringMessage(By.xpath("//h2[normalize-space()='Welcome to our store']"), "Welcome to our store");
         // 2.43 Click on “Logout” link
+        clickOnElement(By.xpath("//a[normalize-space()='Log out']"));
         // 2.44 Verify the URL is “https://demo.nopcommerce.com/”
+        String currentUrl = driver.getCurrentUrl();
+        String actualUrl = "https://demo.nopcommerce.com/";
+        Assert.assertEquals(actualUrl, currentUrl);
     }
 
 
